@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>保险记录表单</title>
+    <th:block th:insert="~{shared/form::resource}"/>
+</head>
+<body>
+<form id="form">
+    <input type="hidden" id="id">
+    <table>
+        <tr>
+            <td>
+                <label>保单号</label><input type="text" id="insNo" placeholder="保单号">
+            </td>
+            <td>
+                <label>保险公司</label><input type="text" id="insCo" placeholder="保险公司">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>投保日期</label><input type="text" id="insTime" placeholder="投保日期"
+                                          onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})">
+            </td>
+            <td>
+                <label>投保金额</label><input type="text" id="insAmount1" placeholder="投保金额">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>保险金额</label><input type="text" id="insAmount2" placeholder="保险金额">
+            </td>
+            <td>
+                <label>到期时间</label><input type="text" id="endTime" placeholder="到期时间"
+                                          onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <label>经手人</label><input type="text" id="handlePerson" placeholder="经手人">
+            </td>
+        </tr>
+    </table>
+</form>
+<script th:inline="javascript">
+    var category = [[${category}]], formData = [[${formData}]];
+    var form = new Form('form', formData);//构造表单对象
+    form.initial();//表单初始化
+
+    /**
+     * 提交表单
+     */
+    function subForm() {
+        if (form.verify()) {
+            return form.submit("/insurance/subForm");
+        } else {
+            return false;
+        }
+    }
+</script>
+</body>
+</html>

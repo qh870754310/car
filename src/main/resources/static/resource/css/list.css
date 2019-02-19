@@ -1,0 +1,240 @@
+body {
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    font: 12px PingFang SC, Lantinghei SC, Microsoft Yahei, Hiragino Sans GB, Microsoft Sans Serif, WenQuanYi Micro Hei, sans, serif !important;
+}
+
+div, ul, li, input {
+    font: inherit;
+}
+
+.head {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    padding: 0;
+}
+
+.head.without-condition {
+    height: 51px;
+}
+
+.head .button {
+    position: absolute;
+    left: 1px;
+    top: 1px;
+    right: 1px;
+    height: 50px;
+    border: 1px solid #e1e1e1;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.head .condition {
+    position: absolute;
+    left: 1px;
+    top: 52px;
+    right: 1px;
+    bottom: 1px;
+    border: 1px solid #e1e1e1;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.head .condition.expand {
+    z-index: 9;
+    height: 200px;
+    overflow-y: auto;
+    background-color: #eeeeee;
+    box-shadow: 0 0 10px #e1e1e1;
+}
+
+.body {
+    position: absolute;
+    top: 100px;
+    left: 1px;
+    right: 1px;
+    bottom: 1px;
+    padding: 0;
+}
+
+.body.without-condition {
+    top: 52px;
+}
+
+.head .button ul {
+    display: block;
+    float: right;
+    height: 48px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 9px 0;
+    margin: 0 10px 0 0;
+}
+
+.head .button ul li {
+    list-style: none;
+    display: block;
+    float: left;
+    line-height: 28px;
+    height: 30px;
+    /*width: 50px;*/
+    padding: 0 9px;
+    border: 1px solid #e1e1e1;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    cursor: pointer;
+    border-radius: 2px;
+    background-color: #eeeeee;
+    text-align: center;
+}
+
+.head .button ul li i {
+    font-size: inherit;
+    margin-right: 3px;
+}
+
+.head .button ul li:hover {
+    box-shadow: 0 0 5px #e1e1e1;
+}
+
+.head .button ul li:active {
+    background-color: #e1e1e1;
+}
+
+.head .button ul li + li {
+    margin-left: 10px;
+}
+
+.head .condition ul {
+    padding: 8px;
+    margin: 0;
+    display: block;
+    float: left;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.head .condition ul.base {
+    height: 45px;
+}
+
+.head .condition ul li {
+    list-style: none;
+    display: block;
+    float: left;
+    margin-left: 10px;
+}
+
+.head .condition ul.base li a.btn {
+    display: block;
+    outline: none;
+    text-decoration: none;
+    padding-left: 8px;
+    padding-right: 8px;
+    height: 30px;
+    line-height: 28px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    border: 1px solid #e1e1e1;
+    cursor: pointer;
+    border-radius: 2px;
+    text-align: center;
+    background-color: #eeeeee;
+}
+
+.head .condition ul.base li a.btn:hover {
+    box-shadow: 0 0 5px #e1e1e1;
+}
+
+.head .condition ul.base li a:active {
+    background-color: #e1e1e1;
+}
+
+.head .condition ul.base li a i {
+    font-size: 12px;
+}
+
+.body .left {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 230px;
+    border: 1px solid #e1e1e1;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.body .left .left-title {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 27px;
+    line-height: 27px;
+    color: #333333;
+    padding-left: 5px;
+    background-color: #f3f3f3;
+    background: -webkit-linear-gradient(top, #F8F8F8 0, #eeeeee 100%);
+    background: -moz-linear-gradient(top, #F8F8F8 0, #eeeeee 100%);
+    background: -o-linear-gradient(top, #F8F8F8 0, #eeeeee 100%);
+    background: linear-gradient(to bottom, #F8F8F8 0, #eeeeee 100%);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#F8F8F8, endColorstr=#eeeeee, GradientType=0);
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    border-bottom: 1px solid #e1e1e1;
+}
+
+.body .left .left-content {
+    position: absolute;
+    top: 27px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 2px;
+    overflow-y: auto;
+}
+
+.body .left .left-top {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    height: 40%;
+}
+
+.body .left .left-bottom {
+    position: absolute;
+    left: 0;
+    top: 40%;
+    right: 0;
+    bottom: 0;
+    border-top: 1px solid #e1e1e1;
+}
+
+.body .right {
+    position: absolute;
+    top: 0;
+    left: 231px;
+    right: 0;
+    bottom: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}

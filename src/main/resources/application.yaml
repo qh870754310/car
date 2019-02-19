@@ -1,0 +1,24 @@
+#Tomcat配置
+server:
+  port: 8080  #端口
+#日志配置
+logging:
+  config: classpath:config/log/logback.xml  #日志配置文件所在路径
+spring:
+  #thymeleaf配置
+  thymeleaf:
+    cache: false   #是否开启缓存
+  #数据源配置
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource  #数据源类型
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver  #数据库驱动
+    url: jdbc:sqlserver://192.168.1.11:1433;DatabaseName=hd_car;   #数据库连接地址
+    username: sa  #账户
+    password: SJkj54321 #密码
+  jackson:
+    date-format: yyyy-MM-dd #日期格式化
+    time-zone: GMT+8  #时区
+#mybatis配置
+mybatis:
+  config-location: classpath:config/mybatis/mybatis-config.xml  #mybatis配置文件所在路径
+  mapper-locations: classpath:mapper/**/*.xml #mybatis映射文件所在路径

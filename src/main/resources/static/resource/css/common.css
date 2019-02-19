@@ -1,0 +1,304 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: PingFang SC, Lantinghei SC, Microsoft Yahei, Hiragino Sans GB, Microsoft Sans Serif, WenQuanYi Micro Hei, sans, serif;
+    overflow: hidden;
+}
+
+ul {
+    padding: 0;
+    margin: 0;
+}
+
+.left-block {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 220px;
+    transition: all 0.3s linear;
+    -moz-transition: all 0.3s linear; /* Firefox 4 */
+    -webkit-transition: all 0.3s linear; /* Safari 和 Chrome */
+    -o-transition: all 0.3s linear; /* Opera */
+    z-index: 10;
+    background-color: #ffffff;
+}
+
+.left-block > .model-info {
+    padding: 13px;
+    border-bottom: 1px solid #e1e1e1;
+    background: -webkit-linear-gradient(#ffffff, #eeeeee); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(#ffffff, #eeeeee); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(#ffffff, #eeeeee); /* Firefox 3.6 - 15 */
+    background: linear-gradient(#ffffff, #eeeeee); /* 标准的语法 */
+}
+
+.left-block > .model-info > .model-icon {
+    font-size: 14px;
+}
+
+.left-block > .model-info > .model-name {
+    font-size: 14px;
+}
+
+.left-block > .model-info > .toggle-icon {
+    position: absolute;
+    right: 0;
+    top: 13px;
+    width: 19px;
+    height: 22px;
+    background: url(../img/main/sider-toggle.png) no-repeat 0 0;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s linear;
+    -moz-transition: all 0.3s linear; /* Firefox 4 */
+    -webkit-transition: all 0.3s linear; /* Safari 和 Chrome */
+    -o-transition: all 0.3s linear; /* Opera */
+}
+
+.left-block > .car-state {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.left-block > .car-state > li {
+    font-size: 12px;
+    display: block;
+    float: left;
+    border-bottom: 1px solid #e1e1e1;
+    cursor: pointer;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    text-align: center;
+    padding: 5px;
+    background-color: #EEEEEE;
+}
+
+.left-block > .car-state > li.active {
+    background-color: #ffffff;
+    border-bottom: none;
+}
+
+#all {
+    width: 73px;
+}
+
+#online {
+    width: 74px;
+}
+
+#offline {
+    width: 73px;
+}
+
+#all, #online {
+    border-right: 1px solid #e1e1e1;
+}
+
+.car-list {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    top: 73px;
+    width: 220px;
+    overflow-y: auto;
+    display: none;
+}
+
+.car-list.active{
+    display: block;
+}
+
+.left-block > .metismenu li {
+    list-style: none;
+    border-bottom: 1px solid #e1e1e1;
+}
+
+.left-block > .metismenu li.active {
+    border-bottom: none;
+}
+
+.left-block > .metismenu li > a {
+    font-size: 14px;
+    color: black;
+    outline: none;
+    text-decoration: none;
+    display: block;
+    width: 100%;
+    padding: 12px 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    border-left: 3px solid #ffffff;
+}
+
+.left-block > .metismenu li > a > .item-name {
+    margin-left: 5px;
+    font-size: 12px;
+}
+
+.left-block > .metismenu li > a:hover {
+    background-color: #eeeeee;
+}
+
+.left-block > .metismenu li > a > .item-close, .left-block > .metismenu li > a > .item-open {
+    float: right;
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+.left-block > .metismenu li > a > .item-open {
+    display: none;
+}
+
+.left-block > .metismenu li.active > a {
+    border-bottom: 1px solid #e1e1e1;
+}
+
+.left-block > .metismenu li.active > a > .item-open {
+    display: inline;
+}
+
+.left-block > .metismenu li.active > a > .item-close {
+    display: none;
+}
+
+.left-block > .metismenu a.selected {
+    background-color: #4D6178 !important;
+    color: #ffffff;
+    border-left: 3px solid #ffa405;
+}
+
+.left-block > .metismenu .fl > a > .item-icon {
+    margin-left: 20px;
+    font-size: 12px;
+}
+
+.left-block > .metismenu .sl > a > .item-icon {
+    margin-left: 40px;
+    font-size: 12px;
+}
+
+.left-block > .metismenu .tl > a > .item-icon {
+    margin-left: 60px;
+    font-size: 12px;
+}
+
+.right-block {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 220px;
+    transition: all 0.3s linear;
+    -moz-transition: all 0.3s linear; /* Firefox 4 */
+    -webkit-transition: all 0.3s linear; /* Safari 和 Chrome */
+    -o-transition: all 0.3s linear; /* Opera */
+    border-left: 1px solid #e1e1e1;
+}
+
+.tab-wrap {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 48px;
+    background: -webkit-linear-gradient(#ffffff, #eeeeee); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(#ffffff, #eeeeee); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(#ffffff, #eeeeee); /* Firefox 3.6 - 15 */
+    background: linear-gradient(#ffffff, #eeeeee); /* 标准的语法 */
+}
+
+.tab-wrap > ul {
+    display: block;
+    padding: 5px 20px 0 20px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.tab-wrap > ul > li {
+    list-style: none;
+    display: block;
+    float: left;
+    border: 1px solid #e1e1e1;
+    height: 43px;
+    padding: 8px 25px 8px 15px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    cursor: pointer;
+    position: relative;
+}
+
+.tab-wrap > ul > li.fixed {
+    padding: 10px;
+}
+
+.tab-wrap > ul > li > img {
+    vertical-align: top;
+    height: 9px;
+    width: 9px;
+    position: absolute;
+    right: 6px;
+    top: 16px;
+}
+
+.tab-wrap > ul > li > img.close-r {
+    display: none;
+}
+
+.tab-wrap > ul > li:hover > img.close-g {
+    display: none;
+}
+
+.tab-wrap > ul > li:hover > img.close-r {
+    display: block;
+}
+
+.tab-wrap > ul > li + li {
+    margin-left: 5px;
+}
+
+.tab-wrap > ul li:hover {
+    background-color: #ffffff;
+}
+
+.tab-wrap > ul > li.active {
+    background-color: #ffffff;
+    border-bottom: none;
+    border-top: 3px solid #ffa405;
+
+}
+
+.tab-wrap > ul > li > span, .tab-wrap > ul > li > i {
+    font-size: 12px;
+}
+
+.tab-wrap > ul > li > i:hover {
+    color: indianred !important;
+}
+
+.content-wrap {
+    position: absolute;
+    left: 0;
+    top: 48px;
+    right: 0;
+    bottom: 0;
+}
+
+.content-wrap .isIframe {
+    display: none;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.content-wrap .isIframe.active {
+    display: block;
+}
+

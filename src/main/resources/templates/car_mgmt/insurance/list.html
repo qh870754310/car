@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>保险记录列表</title>
+    <th:block th:insert="~{shared/list::resource}"/>
+    <script>
+        let $grid = null;
+        $(function () {
+            $grid = $('#grid');
+            $grid.datagrid({
+                width: document.documentElement.clientWidth - 2,
+                height: document.documentElement.clientHeight - 54,
+                url: '/insurance/getDataGrid',
+                idField: 'id',
+                rownumbers: true,
+                singleSelect: true,
+                pagination: true,
+                pageSize: 20,
+                pageList: [20, 50, 100],
+                sortName: 'insTime',
+                sortOrder: 'desc',
+                remoteSort: true,
+                emptyMsg: '未查询到任何数据...',
+                columns: [
+                    [
+                        {title: '保单号', field: 'insNo', width: 200},
+                        {title: '保险公司', field: 'insCo', width: 100},
+                        {title: '投保日期', field: 'insTime', width: 100},
+                        {title: '投保金额', field: 'insAmount1', width: 150},
+                        {title: '保险金额', field: 'insAmount2', width: 100},
+                        {title: '到期时间', field: 'endTime', width: 100},
+                        {title: '经手人', field: 'handlePerson', width: 100}
+                    ]
+                ]
+            });
+            //自适应大小
+            $(window).resize(function () {
+                $grid.datagrid('resize', {
+                    width: document.documentElement.clientWidth - 2,
+                    height: document.documentElement.clientHeight - 54
+                });
+            });
+            //新增
+            $('#add').on('click', function () {
+                func.openForm({title: '新增保险记录', height: '400px', url: '/insurance/form'});
+            });
+            //编辑
+            $('#edit').on('click', function () {
+                let row = $grid.datagrid('getSelected');
+                if (row) {
+                    func.openForm({title: '修改保险记录', height: '400px', url: '/insurance/form?id=' + row.id});
+                } else {
+                    func.topMsg('请选择一条保险记录！', 7);
+                }
+            });
+            //删除
+            $('#del').on('click', function () {
+                let row = $grid.datagrid('getSelected');
+                if (row) {
+                    func.delConfirm('/insurance/del/' + row.id);
+                } else {
+                    func.topMsg('请选择一条保险记录！', 7);
+                }
+            });
+        });
+
+        /**
+         * 重新加载列表
+         */
+        function reloadGrid() {
+            $grid.datagrid('clearSelections').datagrid('reload');
+        }
+    </script>
+</head>
+<body>
+<div class="head without-condition">
+    <div class="button">
+        <ul>
+            <li id="add"><i class="iconfont icon-9"></i>新增</li>
+            <li id="edit"><i class="iconfont icon-11"></i>修改</li>
+            <li id="del"><i class="iconfont icon-10"></i>删除</li>
+        </ul>
+    </div>
+</div>
+<div class="body without-condition">
+    <table id="grid"></table>
+</div>
+</body>
+</html>

@@ -1,0 +1,55 @@
+* {
+    font: 12px "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, "Droid Sans", "wenquanyi micro hei", "Hiragino Sans GB", "Hiragino Sans GB W3", Arial, sans-serif;
+}
+
+body, ul, li, table, td {
+    margin: 0;
+    padding: 0;
+}
+
+table {
+    border-collapse: collapse;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 0 5px grey;
+    background-color: #fbfbfb;
+    cursor: pointer;
+}
+
+table:hover {
+    box-shadow: 0 0 10px #1DB702;
+}
+
+td {
+    padding: 5px;
+}
+
+.itemTitle {
+    width: 80px;
+    background-color: #f2f2f2;
+    text-align: right;
+}
+
+.history {
+    background: url(../img/func/line.gif) repeat-y 187px 0;
+    overflow: hidden;
+}
+
+.history > ul > li {
+    list-style: none;
+    background: url(../img/func/point.gif) no-repeat 180px 0;
+    margin-bottom: 30px;
+    margin-top: 30px;
+    position: relative;
+}
+
+.history > ul > li .time {
+    display: block;
+    color: grey;
+    font-size: 12px;
+    position: absolute;
+    left: 70px;
+}
+
+.history > ul > li table {
+    margin-left: 210px;
+}

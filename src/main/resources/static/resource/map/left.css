@@ -1,0 +1,105 @@
+﻿#map-menu {
+    position: absolute;
+    top: 3%;
+    bottom: 3%;
+    left: 0;
+    z-index: 31;
+    width: 270px;
+    border-radius: 3px;
+    -webkit-box-shadow: #8B8B83 0 0 10px;
+    -moz-box-shadow: #8B8B83 0 0 10px;
+    box-shadow: #8B8B83 0 0 10px;
+    background-color: #EDEDED;
+}
+
+#menu-option {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 40px;
+    background-color: #4D6178;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#menu-option > ul {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+#menu-option > ul > li {
+    padding: 0;
+    text-align: center;
+}
+
+#menu-option > ul > li > a {
+    height: 65px;
+    width: 40px;
+    position: relative;
+    display: inline-block;
+    text-decoration: none;
+    outline: none;
+    color: #ffffff;
+}
+
+#menu-option > ul > li > a:hover {
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+#menu-option > ul > li > a > i {
+    font-size: 20px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+#menu-option > ul > li > a > span {
+    width: 40px;
+    position: absolute;
+    top: 38px;
+    left: 0;
+}
+
+.actived-option {
+    background-color: rgba(0, 0, 0, 0.4) !important;
+    color: #FFD39B !important;
+}
+
+/*菜单选项内容面板*/
+.option-panel {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 40px;
+    right: 0;
+    display: none;
+    background-color: #ffffff;
+    overflow-y: auto !important;
+}
+
+/*显示/隐藏地图菜单面板*/
+#hidden-show-btn {
+    position: absolute;
+    top: 46%;
+    bottom: 46%;
+    right: -15px;
+    width: 15px;
+    z-index: inherit;
+    -webkit-box-shadow: #8B8B83 0 0 10px;
+    -moz-box-shadow: #8B8B83 0 0 10px;
+    box-shadow: #8B8B83 0 0 10px;
+}
+
+#hidden-show-btn > a > img {
+    width: 100%;
+    height: 100%;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}

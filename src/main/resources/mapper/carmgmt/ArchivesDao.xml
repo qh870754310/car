@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="hd.car.dao.carmgmt.ArchivesDao">
+    <!--新增-->
+    <insert id="add">
+        INSERT INTO archives (id,
+                              licensePlate,
+                              category,
+                              principal,
+                              principalPhone,
+                              imei,
+                              model,
+                              phone,
+                              produceTime,
+                              endTime)
+        VALUES (#{id},
+                #{licensePlate},
+                #{category},
+                #{principal},
+                #{principalPhone},
+                #{imei},
+                #{model},
+                #{phone},
+                #{produceTime},
+                #{endTime})
+    </insert>
+    <!--修改-->
+    <update id="modify">
+        UPDATE archives
+        SET licensePlate   = #{licensePlate},
+            category       = #{category},
+            principal      = #{principal},
+            principalPhone = #{principalPhone},
+            imei           = #{imei},
+            model          = #{model},
+            phone          = #{phone},
+            produceTime    = #{produceTime},
+            endTime        = #{endTime}
+        WHERE id = #{id}
+    </update>
+    <!--删除-->
+    <delete id="del">
+        DELETE FROM archives
+        WHERE id = #{id}
+    </delete>
+    <!--查询-->
+    <select id="get" resultType="archives">
+        SELECT * FROM archives
+        <where>
+            <if test="licensePlate!=null">
+                AND licensePlate LIKE '%'+#{licensePlate}+'%'
+            </if>
+            <if test="principal!=null">
+                AND principal LIKE '%'+#{principal}+'%'
+            </if>
+        </where>
+        <if test="sortInfo!=null">
+            ORDER BY ${sortInfo}
+        </if>
+    </select>
+    <!--根据id查询-->
+    <select id="getById" resultType="archives">
+        SELECT *
+        FROM archives
+        WHERE id = #{id}
+    </select>
+    <!--根据车牌号获取记录数-->
+    <select id="getCountByLicense" resultType="int">
+        SELECT COUNT(*)
+        FROM archives
+        WHERE licensePlate = #{license}
+    </select>
+    <!-- 根据条件查询车辆信息 -->
+    <select id="getAllArchives" resultType="java.util.Map">
+        SELECT
+            id,
+            licensePlate,
+            category,
+            principal,
+            principalPhone,
+            imei,
+            model,
+            phone,
+            produceTime,
+            endTime,
+            CASE state
+        WHEN 1 THEN
+            '在线'
+        ELSE
+            '离线'
+        END AS state,
+         CASE acc
+        WHEN 1 THEN
+            '已发动'
+        ELSE
+            '未发动'
+        END as acc,
+         electricity,
+         locationType ,
+         CONVERT(varchar(100), locationTime, 20) AS locationTime,
+         longitude,
+         latitude
+        FROM
+            archives
+    </select>
+    <!-- 根据条件获取历史轨迹 -->
+    <select id="getHistoryTracksPoint" resultType="java.util.Map">
+        select a.*, b.licensePlate from track as a left join archives as b on a.carId = b.id where a.carId = #{id} and a.recordTime BETWEEN #{startDate} AND #{endDate}
+        order by recordTime asc
+    </select>
+</mapper>

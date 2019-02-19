@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>jquery.iviewer test</title>
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript" src="jqueryui.js"></script>
+    <script type="text/javascript" src="jquery.mousewheel.min.js"></script>
+    <script type="text/javascript" src="../jquery.iviewer.js"></script>
+    <script type="text/javascript">
+        var $ = jQuery;
+
+        function getQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]); return null;
+        }
+        
+
+        $(document).ready(function () {
+            //alert(getQueryString("myurl"));
+            var iv2 = $("#viewer2").iviewer(
+            {
+                src: getQueryString("myurl")
+            });
+        });
+    </script>
+    <link rel="stylesheet" href="../jquery.iviewer.css" />
+    <style>
+        .viewer {
+            width: 95%;
+            height: 500px;
+            border: 1px solid black;
+            position: relative;
+            margin:0 auto;
+        }
+
+        .wrapper {
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div id="viewer2" class="viewer" style="width: 95%;"></div>
+    </div>
+</body>
+</html>

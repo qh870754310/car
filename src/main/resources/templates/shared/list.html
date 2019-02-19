@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>列表资源</title>
+</head>
+<body>
+<th:block th:fragment="resource">
+    <!--jquery-->
+    <script th:src="@{/resource/plugin/jquery/jquery-1.12.4.min.js}"></script>
+    <!--layer-->
+    <script th:src="@{/resource/plugin/layer/layer.js}"></script>
+    <!--easyui-->
+    <script th:src="@{/resource/plugin/easyui/jquery.easyui.min.js}"></script>
+    <script th:src="@{/resource/plugin/easyui/locale/easyui-lang-zh_CN.js}"></script>
+    <link rel="stylesheet" th:href="@{/resource/plugin/easyui/themes/custom/easyui.css}"/>
+    <!--滚动条样式-->
+    <link rel="stylesheet" th:href="@{/resource/css/scrollbar.css}"/>
+    <!--字体样式-->
+    <link rel="stylesheet" th:href="@{/resource/iconfont/iconfont.css}"/>
+    <!--自定义样式-->
+    <link rel="stylesheet" th:href="@{/resource/css/list.css}"/>
+    <!--方法封装-->
+    <script th:src="@{/resource/js/function.js}"></script>
+    <!--amazing-form-->
+    <th:block th:include="shared/amazing::resource"/>
+    <!--date-picker-->
+    <script th:src="@{/resource/plugin/date-picker/WdatePicker.js}"></script>
+    <!--css动画-->
+    <link rel="stylesheet" th:href="@{/resource/css/animate.css}"/>
+    <link rel="stylesheet" th:href="@{/resource/css/csshake.min.css}"/>
+</th:block>
+</body>
+</html>

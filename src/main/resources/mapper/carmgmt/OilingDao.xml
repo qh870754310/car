@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="hd.car.dao.carmgmt.OilingDao">
+    <insert id="add">
+        INSERT INTO oiling (id, oilQuantity, unitPrice, totalPrice, oilStation, handlePerson, oilTime)
+        VALUES (#{id}, #{oilQuantity}, #{unitPrice}, #{totalPrice}, #{oilStation}, #{handlePerson}, #{oilTime})
+    </insert>
+    <update id="modify">
+        UPDATE oiling
+        SET oilQuantity   = #{oilQuantity},
+            unitPrice     = #{unitPrice},
+            totalPrice    = #{totalPrice},
+            oilStation    = #{oilStation},
+            handlePerson = #{handlePerson},
+            oilTime       = #{oilTime}
+        WHERE id = #{id}
+    </update>
+    <delete id="del">
+        DELETE FROM oiling
+        WHERE id = #{id}
+    </delete>
+    <select id="get" resultType="oiling">
+        SELECT * FROM oiling
+        <if test="sortInfo!=null">
+            ORDER BY ${sortInfo}
+        </if>
+    </select>
+    <select id="getById" resultType="oiling">
+        SELECT *
+        FROM oiling
+        WHERE id = #{id}
+    </select>
+</mapper>

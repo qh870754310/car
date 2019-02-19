@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>常熟市政公用信息管理平台</title>
+    <link rel="stylesheet" href="/resource/css/base.css"/>
+    <link rel="stylesheet" href="/resource/css/main.css"/>
+    <link rel="stylesheet" href="/resource/iconfont/iconfont.css"/>
+    <link rel="stylesheet" href="/resource/css/animate.css"/>
+    <script src="/resource/plugin/jquery/jquery-1.12.4.min.js"></script>
+    <script src="/resource/plugin/layer/layer.js"></script>
+    <link rel="stylesheet" href="/resource/css/csshake.min.css"/>
+    <link rel="stylesheet" href="/resource/plugin/notification/css/ns-default.css"/>
+    <link rel="stylesheet" href="/resource/plugin/notification/css/ns-style-other.css"/>
+    <script src="/resource/plugin/notification/js/modernizr.custom.js"></script>
+    <script src="/resource/plugin/notification/js/classie.js"></script>
+    <script src="/resource/plugin/notification/js/notificationFx.js"></script>
+</head>
+<body>
+<div class="container">
+    <div id="pf-hd">
+        <div class="pf-logo">
+            <img src="/resource/img/logo/logo.png" alt="logo" class="animated jackInTheBox">
+        </div>
+        <div class="pf-nav-wrap">
+            <div class="pf-nav-ww">
+                <ul class="pf-nav">
+                </ul>
+            </div>
+        </div>
+        <div class="pf-user">
+            <div class="pf-user-photo">
+                <img src="/resource/img/avatar/default/male.png"
+                     style="height: 40px;width: 40px;border-radius: 50%;"/>
+            </div>
+            <h4 class="pf-user-name ellipsis">管理员</h4>
+        </div>
+    </div>
+    <div id="pf-bd">
+    </div>
+    <div id="pf-ft">
+        <div class="system-name">
+            <i class="iconfont icon-info" style="font-size: 12px;"></i>
+            <span>常熟市政公用信息管理平台&nbsp;V1.0</span>
+            <img src="/resource/img/main/msg.png" class="msg shake-constant shake-chunk"
+                 onclick="showMsg(this);" title="您有新的系统提醒"/>
+        </div>
+        <div class="copyright-name">
+            <span>CopyRight&nbsp;2018&nbsp;&nbsp;苏州盛景信息科技股份有限公司&nbsp;版权所有</span>
+            <i class="iconfont icon-copyright"></i>
+        </div>
+    </div>
+    <div id="msg"></div>
+</div>
+<script>
+    //初始化一级菜单
+    var menu = '', iframe = '';
+    menu += '<li class="pf-nav-item current"  id="menu_1"><a href="javascript:"><span class="iconfont icon-39"></span><span class="pf-nav-title">定位监控</span></a></li>';
+    menu += '<li class="pf-nav-item "  id="menu_2"><a href="javascript:"><span class="iconfont icon-46"></span><span class="pf-nav-title">车辆管理</span></a></li>';
+    iframe += '<iframe class="page-iframe current" src="/map/view" frameborder="no" height="100%" width="100%" scrolling="auto" id="iframe_1"></iframe>';
+    iframe += '<iframe class="page-iframe " style="display: none;" src="/archives/list" frameborder="no" height="100%" width="100%" scrolling="auto" id="iframe_2"></iframe>';
+    $('.pf-nav').html(menu);
+    $('#pf-bd').html(iframe);
+    // 顶部大菜单单击事件
+    $(document).on('click', '.pf-nav-item', function () {
+        $('.pf-nav-item').removeClass('current');
+        $(this).addClass('current');
+        var menuId = $(this).attr('id');
+        $('#pf-bd .page-iframe').each(function () {
+            if ($(this).attr('id').split('_')[1] == menuId.split('_')[1]) {//如果当前菜单已存在对应的iframe
+                $(this).show().siblings('.page-iframe').hide();//显示当前菜单对应的iframe，隐藏其他iframe
+                return false;//跳出循环
+            }
+        });
+    });
+    $(function () {
+        //消息提示
+        var notification = new NotificationFx({
+            wrapper: document.getElementById('msg'),
+            message: '<div class="ns-thumb"><img src="/resource/img/avatar/default/male.png" width="64" height="64"/></div><div class="ns-content"><p>欢迎访问常熟市政公用信息管理平台！</p></div>',
+            layout: 'other',
+            ttl: 5000,
+            effect: 'thumbslider',
+            type: 'notice'
+        });
+        notification.show();
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>国别表单</title>
+    <th:block th:insert="~{shared/form::resource}"/>
+</head>
+<body>
+<form id="form">
+    <input type="hidden" id="id">
+    <table>
+        <tr>
+            <td>
+                <label>车牌号</label><input type="text" id="licensePlate" placeholder="此号码具有唯一性" verify="NOTNULL">
+            </td>
+            <td>
+                <label>功能类别</label>
+                <select id="category" verify="NOTNULL">
+                    <option value="运输车">运输车</option>
+                    <option value="压路机">压路机</option>
+                    <option value="刮平机">刮平机</option>
+                    <option value="洒水车">洒水车</option>
+                    <option value="湿扫车">湿扫车</option>
+                    <option value="路灯维修车">路灯维修车</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>车辆负责人</label><input type="text" id="principal" placeholder="车辆负责人">
+            </td>
+            <td>
+                <label>负责人电话</label><input type="text" id="principalPhone" placeholder="负责人电话">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>IMEI</label><input type="text" id="imei" placeholder="IMEI">
+            </td>
+            <td>
+                <label>设备型号</label><input type="text" id="model" placeholder="设备型号">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>设备电话</label><input type="text" id="phone" placeholder="设备电话">
+            </td>
+            <td>
+                <label>出厂时间</label><input type="text" id="produceTime" placeholder="出厂时间"
+                                          onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <label>到期时间</label><input type="text" id="endTime" placeholder="到期时间"
+                                          onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})">
+            </td>
+        </tr>
+    </table>
+</form>
+<script th:inline="javascript">
+    var category = [[${category}]], formData = [[${formData}]];
+    var form = new Form('form', formData);//构造表单对象
+    form.initial();//表单初始化
+
+    /**
+     * 提交表单
+     */
+    function subForm() {
+        if (form.verify()) {
+            let codeEle = form.getElement('licensePlate');
+            let isVerify = false;//是否验证code的重复性
+            if (category === 1) {//如果是新增
+                isVerify = true;
+            } else {//编辑
+                isVerify = formData.licensePlate !== codeEle.getValue();
+            }
+            if (isVerify) {
+                let isRepeat = false;
+                $.ajaxSettings.async = false;
+                $.getJSON('/archives/verifyLisence/' + codeEle.getValue(), function (json) {
+                    isRepeat = json.isRepeat;
+                });
+                $.ajaxSettings.async = true;
+                if (isRepeat) {//code重复
+                    codeEle.addPrompt('此车牌号已存在');
+                    return false;
+                } else {
+                    codeEle.removePrompt();
+                    return form.submit("/archives/subForm");
+                }
+            } else {
+                return form.submit("/archives/subForm");
+            }
+        } else {
+            return false;
+        }
+    }
+</script>
+</body>
+</html>

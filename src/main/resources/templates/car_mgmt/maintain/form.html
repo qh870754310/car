@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>维修记录表单</title>
+    <th:block th:insert="~{shared/form::resource}"/>
+</head>
+<body>
+<form id="form">
+    <input type="hidden" id="id">
+    <table>
+        <tr>
+            <td colspan="2">
+                <label>维修原因</label><textarea id="maintainReason" placeholder="维修原因"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>维修费用</label><input type="text" id="maintainCosts" placeholder="维修费用">
+            </td>
+            <td>
+                <label>经手人</label><input type="text" id="handlePerson" placeholder="经手人">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <label>维修单位</label><input type="text" id="maintainOrgan" placeholder="维修单位">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>送修时间</label><input type="text" id="sendTime" placeholder="送修时间"
+                                          onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})">
+            </td>
+            <td>
+                <label>取回时间</label><input type="text" id="getTime" placeholder="取回时间"
+                                          onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})">
+            </td>
+        </tr>
+
+    </table>
+</form>
+<script th:inline="javascript">
+    var category = [[${category}]], formData = [[${formData}]];
+    var form = new Form('form', formData);//构造表单对象
+    form.initial();//表单初始化
+
+    /**
+     * 提交表单
+     */
+    function subForm() {
+        if (form.verify()) {
+            return form.submit("/maintain/subForm");
+        } else {
+            return false;
+        }
+    }
+</script>
+</body>
+</html>

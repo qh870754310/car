@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="hd.car.dao.carmgmt.AnnualDao">
+    <insert id="add">
+        INSERT INTO annual (id, annualTime, annualCosts, handlePerson, adminOffice)
+        VALUES (#{id}, #{annualTime}, #{annualCosts}, #{handlePerson}, #{adminOffice})
+    </insert>
+    <update id="modify">
+        UPDATE annual
+        SET annualTime   = #{annualTime},
+            annualCosts  = #{annualCosts},
+            handlePerson = #{handlePerson},
+            adminOffice  = #{adminOffice}
+        WHERE id = #{id}
+    </update>
+    <delete id="del">
+        DELETE FROM annual
+        WHERE id = #{id}
+    </delete>
+    <select id="get" resultType="annual">
+        SELECT * FROM annual
+        <if test="sortInfo!=null">
+            ORDER BY ${sortInfo}
+        </if>
+    </select>
+    <select id="getById" resultType="annual">
+        SELECT *
+        FROM annual
+        WHERE id = #{id}
+    </select>
+</mapper>

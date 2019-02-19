@@ -1,0 +1,85 @@
+.dropdown.hide {
+    display: none;
+}
+
+.dropdown {
+    float: right !important;
+    position: relative;
+    padding: 10px 15px !important;
+}
+
+.dropdown-toggle {
+    outline: none;
+    text-decoration: none;
+    color: black;
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+.dropdown-menu {
+    display: none;
+    border: 1px solid #e1e1e1;
+    width: 120px;
+    max-height: 400px;
+    position: absolute;
+    top: 41px;
+    right: -20px;
+    background-color: #eeeeee;
+    box-shadow: 0 0 10px #e1e1e1;
+    z-index: 9999;
+    overflow-y: auto;
+    padding: 1px;
+}
+
+.dropdown-menu > li {
+    text-align: center;
+    list-style: none;
+    display: block;
+    cursor: pointer;
+    position: relative;
+    border: 1px solid #e1e1e1;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 1px;
+    height: 30px;
+}
+
+.dropdown-menu > li + li {
+    margin-top: 1px;
+}
+
+.dropdown-menu > li.active {
+    background-color: #ffffff;
+}
+
+.dropdown-menu > li > img {
+    vertical-align: top;
+    height: 9px;
+    width: 9px;
+    position: absolute;
+    right: 7px;
+    top: 9px;
+}
+
+.dropdown-menu > li > img.close-r {
+    display: none;
+}
+
+.dropdown-menu > li:hover > img.close-g {
+    display: none;
+}
+
+.dropdown-menu > li:hover > img.close-r {
+    display: block;
+}
+
+.dropdown-menu > li:hover {
+    background-color: #ffffff;
+}
+
+.dropdown-menu > li > span {
+    font-size: 12px;
+}

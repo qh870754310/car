@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="hd.car.dao.carmgmt.MaintainDao">
+    <insert id="add">
+        INSERT INTO maintain (id, maintainReason, maintainCosts, handlePerson, maintainOrgan, sendTime, getTime)
+        VALUES (#{id}, #{maintainReason}, #{maintainCosts}, #{handlePerson}, #{maintainOrgan}, #{sendTime}, #{getTime})
+    </insert>
+    <update id="modify">
+        UPDATE maintain
+        SET maintainReason = #{maintainReason},
+            maintainCosts  = #{maintainCosts},
+            handlePerson   = #{handlePerson},
+            maintainOrgan  = #{maintainOrgan},
+            sendTime       = #{sendTime},
+            getTime        = #{getTime}
+        WHERE id = #{id}
+    </update>
+    <delete id="del">
+        DELETE FROM maintain
+        WHERE id = #{id}
+    </delete>
+    <select id="get" resultType="maintain">
+        SELECT * FROM maintain
+        <if test="sortInfo!=null">
+            ORDER BY ${sortInfo}
+        </if>
+    </select>
+    <select id="getById" resultType="maintain">
+        SELECT *
+        FROM maintain
+        WHERE id = #{id}
+    </select>
+</mapper>

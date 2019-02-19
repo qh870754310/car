@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="hd.car.dao.carmgmt.InsuranceDao">
+    <insert id="add">
+        INSERT INTO insurance (id, insTime, insAmount1, insNo, insAmount2, insCo, endTime, handlePerson)
+        VALUES (#{id}, #{insTime}, #{insAmount1}, #{insNo}, #{insAmount2}, #{insCo}, #{endTime}, #{handlePerson})
+    </insert>
+    <update id="modify">
+        UPDATE insurance
+        SET insTime      = #{insTime},
+            insAmount1   = #{insAmount1},
+            insNo        = #{insNo},
+            insAmount2   = #{insAmount2},
+            insCo        = #{insCo},
+            endTime      = #{endTime},
+            handlePerson = #{handlePerson}
+        WHERE id = #{id}
+    </update>
+    <delete id="del">
+        DELETE FROM insurance
+        WHERE id = #{id}
+    </delete>
+    <select id="get" resultType="insurance">
+        SELECT * FROM insurance
+        <if test="sortInfo!=null">
+            ORDER BY ${sortInfo}
+        </if>
+    </select>
+    <select id="getById" resultType="insurance">
+        SELECT *
+        FROM insurance
+        WHERE id = #{id}
+    </select>
+</mapper>

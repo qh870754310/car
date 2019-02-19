@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>车辆管理</title>
+    <th:block th:insert="~{shared/list::resource}"/>
+    <script>
+        let $grid = null;
+        $(function () {
+            $grid = $('#grid');
+            $grid.datagrid({
+                width: document.documentElement.clientWidth - 2,
+                height: document.documentElement.clientHeight - 101,
+                url: '/archives/getDataGrid',
+                idField: 'id',
+                rownumbers: true,
+                singleSelect: true,
+                pagination: true,
+                pageSize: 20,
+                pageList: [20, 50, 100],
+                sortName: 'licensePlate',
+                sortOrder: 'asc',
+                remoteSort: true,
+                emptyMsg: '未查询到任何数据...',
+                frozenColumns: [
+                    [
+                        {
+                            title: '车牌号', field: 'licensePlate', width: 150
+                        }
+                    ]
+                ],
+                columns: [
+                    [
+                        {title: '功能类别', field: 'category', width: 150},
+                        {title: '车辆负责人', field: 'principal', width: 150},
+                        {title: '负责人电话', field: 'principalPhone', width: 150},
+                        {title: 'IMEI', field: 'imei', width: 150},
+                        {title: '设备型号', field: 'model', width: 150},
+                        {title: '设备电话', field: 'phone', width: 150},
+                        {title: '出厂时间', field: 'produceTime', width: 150},
+                        {title: '到期时间', field: 'endTime', width: 150}
+                    ]
+                ]
+            });
+            //自适应大小
+            $(window).resize(function () {
+                $grid.datagrid('resize', {
+                    width: document.documentElement.clientWidth - 2,
+                    height: document.documentElement.clientHeight - 101
+                });
+            });
+            //查询
+            $('.query').on('click', function () {
+                let formData = conditionForm.getData(), param = [];
+                if (formData.get('licensePlate')) {
+                    param.push('licensePlate☻' + formData.get('licensePlate'));
+                }
+                if (formData.get('principal')) {
+                    param.push('principal☻' + formData.get('principal'));
+                }
+                if (param.length > 0) {
+                    $grid.datagrid('options').queryParams = {
+                        param: param.join('≌')
+                    };
+                } else {
+                    $grid.datagrid('options').queryParams = {};
+                }
+                reloadGrid();
+            });
+            //重置
+            $('.reset').on('click', function () {
+                conditionForm.getElement("licensePlate").setValue('');
+                conditionForm.getElement("principal").setValue('');
+                $grid.datagrid('options').queryParams = {};
+                reloadGrid();
+            });
+            //新增
+            $('#add').on('click', function () {
+                func.openForm({title: '新增车辆档案', height: '450px', url: '/archives/form'});
+            });
+            //编辑
+            $('#edit').on('click', function () {
+                let row = $grid.datagrid('getSelected');
+                if (row) {
+                    func.openForm({title: '修改车辆档案', height: '450px', url: '/archives/form?id=' + row.id});
+                } else {
+                    func.topMsg('请选择一条车辆档案信息！', 7);
+                }
+            });
+            //删除
+            $('#del').on('click', function () {
+                let row = $grid.datagrid('getSelected');
+                if (row) {
+                    func.delConfirm('/archives/del/' + row.id);
+                } else {
+                    func.topMsg('请选择一条车辆档案信息！', 7);
+                }
+            });
+            //维修记录
+            $('#maintain').on('click', function () {
+                let row = $grid.datagrid('getSelected');
+                if (row) {
+                    layer.open({
+                        type: 2,
+                        title: '<i class="iconfont icon-47" style="font-size: 12px"></i>&nbsp;维修记录',
+                        resize: false,
+                        moveOut: true,
+                        anim: 1,
+                        area: ['850px', '450px'],
+                        content: '/maintain/list'
+                    });
+                } else {
+                    func.topMsg('请选择一条车辆档案信息！', 7);
+                }
+            });
+            //保险记录
+            $('#insurance').on('click', function () {
+                let row = $grid.datagrid('getSelected');
+                if (row) {
+                    layer.open({
+                        type: 2,
+                        title: '<i class="iconfont icon-47" style="font-size: 12px"></i>&nbsp;保险记录',
+                        resize: false,
+                        moveOut: true,
+                        anim: 1,
+                        area: ['850px', '450px'],
+                        content: '/insurance/list'
+                    });
+                } else {
+                    func.topMsg('请选择一条车辆档案信息！', 7);
+                }
+            });
+            //年检记录
+            $('#annual').on('click', function () {
+                let row = $grid.datagrid('getSelected');
+                if (row) {
+                    layer.open({
+                        type: 2,
+                        title: '<i class="iconfont icon-47" style="font-size: 12px"></i>&nbsp;年检记录',
+                        resize: false,
+                        moveOut: true,
+                        anim: 1,
+                        area: ['850px', '450px'],
+                        content: '/annual/list'
+                    });
+                } else {
+                    func.topMsg('请选择一条车辆档案信息！', 7);
+                }
+            });
+            //加油记录
+            $('#oiling').on('click', function () {
+                let row = $grid.datagrid('getSelected');
+                if (row) {
+                    layer.open({
+                        type: 2,
+                        title: '<i class="iconfont icon-47" style="font-size: 12px"></i>&nbsp;加油记录',
+                        resize: false,
+                        moveOut: true,
+                        anim: 1,
+                        area: ['850px', '450px'],
+                        content: '/oiling/list'
+                    });
+                } else {
+                    func.topMsg('请选择一条车辆档案信息！', 7);
+                }
+            });
+        });
+
+        /**
+         * 重新加载列表
+         */
+        function reloadGrid() {
+            $grid.datagrid('clearSelections').datagrid('reload');
+        }
+    </script>
+</head>
+<body>
+<div class="head">
+    <div class="button">
+        <ul>
+            <li id="add"><i class="iconfont icon-9"></i>新增</li>
+            <li id="edit"><i class="iconfont icon-11"></i>修改</li>
+            <li id="del"><i class="iconfont icon-10"></i>删除</li>
+            <li id="maintain"><i class="iconfont icon-47"></i>维修记录</li>
+            <li id="insurance"><i class="iconfont icon-48"></i>保险记录</li>
+            <li id="annual"><i class="iconfont icon-49"></i>年检记录</li>
+            <li id="oiling"><i class="iconfont icon-50"></i>加油记录</li>
+        </ul>
+    </div>
+    <div class="condition form" id="condtion-form">
+        <ul class="base">
+            <li>
+                <label>车牌号</label>
+                <input type="text" id="licensePlate" placeholder="车牌号">
+            </li>
+            <li>
+                <label>车辆负责人</label>
+                <input type="text" id="principal" placeholder="车辆负责人">
+            </li>
+            <li>
+                <a class="btn query"><i class="iconfont icon-query"></i>查询</a>
+            </li>
+            <li>
+                <a class="btn reset"><i class="iconfont icon-reset"></i>重置</a>
+            </li>
+        </ul>
+        <script>
+            var conditionForm = new Form('condtion-form');
+            conditionForm.initial();
+        </script>
+    </div>
+</div>
+<div class="body">
+    <table id="grid"></table>
+</div>
+</body>
+</html>

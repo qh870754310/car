@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>定位监控</title>
+    <script th:src="@{/resource/plugin/jquery/jquery-1.12.4.min.js}"></script>
+    <script th:src="@{/resource/plugin/layer/layer.js}"></script>
+    <link rel="stylesheet" th:href="@{/resource/iconfont/iconfont.css}"/>
+    <link rel="stylesheet" th:href="@{/resource/plugin/metismenu/metisMenu.min.css}"/>
+    <script th:src="@{/resource/plugin/metismenu/metisMenu.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/resource/css/common.css}"/>
+    <link rel="stylesheet" th:href="@{/resource/plugin/tabdrop/css/tabdrop.css}"/>
+    <script th:src="@{/resource/plugin/tabdrop/js/tabdrop.js}"></script>
+    <link rel="stylesheet" th:href="@{/resource/css/animate.css}"/>
+    <link rel="stylesheet" th:href="@{/resource/css/csshake.min.css}"/>
+    <link rel="stylesheet" th:href="@{/resource/css/scrollbar.css}"/>
+    <link rel="stylesheet" th:href="@{/resource/plugin/smartmenu/css/smartMenu.css}"/>
+    <script th:src="@{/resource/plugin/smartmenu/js/jquery-smartMenu.js}"></script>
+    <script th:src="@{/resource/js/function.js}"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=5qnG3inG4VhPZOcjNwj4ycZN"></script>
+    <style type="text/css">
+        #allmap {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            margin: 0;
+            font-family: "微软雅黑";
+        }
+
+        .cars {
+            font-size: 12px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .cars li {
+            display: block;
+            border: 1px solid #EEEEEE;
+            margin: 10px;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            padding: 8px;
+            cursor: pointer;
+        }
+
+        .cars li:hover {
+            -webkit-box-shadow: 0 0 7px #e1e1e1;
+            -moz-box-shadow: 0 0 7px #e1e1e1;
+            box-shadow: 0 0 7px #e1e1e1;
+        }
+
+        .cars li a {
+            outline: none;
+            text-decoration: none;
+            color: #333333;
+        }
+    </style>
+</head>
+<body>
+<div class="left-block">
+    <div class="model-info">
+        <i class="model-icon iconfont icon-46"></i>
+        <span class="model-name">车辆列表</span>
+        <span class="toggle-icon"></span>
+    </div>
+    <ul class="car-state">
+        <li id="all" class="active">全部(11)</li>
+        <li id="online">在线(8)</li>
+        <li id="offline">离线(3)</li>
+    </ul>
+    <div class="car-list active" id="listAll">
+
+    </div>
+    <div class="car-list" id="listOnline">
+
+    </div>
+    <div class="car-list" id="listOffline">
+
+    </div>
+</div>
+<div class="right-block">
+    <!--地图-->
+    <div id="allmap"></div>
+</div>
+<script>
+    //左侧菜单栏伸缩
+    $('.toggle-icon').on('click', function () {
+        if ($('.left-block').hasClass('toggle')) {
+            $('.left-block').removeClass('toggle').css('left', '0');
+            $('.right-block').css('left', '220px');
+            $(this).css('background-position', '0 0').css('right', '0');
+        } else {
+            $('.left-block').addClass('toggle').css('left', '-220px');
+            $('.right-block').css('left', '0');
+            $(this).css('background-position', '-19px 0').css('right', '-20px');
+        }
+        setTimeout('$(".areTabs").tabdrop("layout");', 300);//重新布局页签栏
+    });
+    $('.car-state li').on('click', function () {
+        if (!$(this).hasClass('active')) {
+            $(this).addClass('active').siblings('li').removeClass('active');
+            var thisId = $(this).attr('id');
+            if (thisId === 'all') {
+                $('#listAll').addClass('active').siblings('.car-list').removeClass('active');
+            }
+            if (thisId === 'online') {
+                $('#listOnline').addClass('active').siblings('.car-list').removeClass('active');
+            }
+            if (thisId === 'offline') {
+                $('#listOffline').addClass('active').siblings('.car-list').removeClass('active');
+            }
+        }
+    });
+</script>
+<script th:inline="javascript">
+    var arrs = [[${Archives}]];
+    initArchivesList(arrs);
+
+    function initArchivesList(arrs) {
+        var zx = "<ul class='cars'>", lx = "<ul class='cars'>", all = "<ul class='cars'>";
+        var numAll=0,numZx=0,numLx=0;
+        for (var i = 0; i < arrs.length; i++) {
+            numAll++;
+            if (arrs[i].state == "在线") {
+                numZx++;
+                zx += "<li><img src=\"/resource/img/online.png\"><a>" + arrs[i].licensePlate + "</a></li>";
+                all += "<li><img src=\"/resource/img/online.png\"><a>" + arrs[i].licensePlate + "</a></li>";
+            } else {
+                numLx++
+                lx += "<li><img src=\"/resource/img/offline.png\"><a>" + arrs[i].licensePlate + "</a></li>";
+                all += "<li><img src=\"/resource/img/offline.png\"><a>" + arrs[i].licensePlate + "</a></li>";
+            }
+        }
+        zx += "</ul>";
+        lx += "</ul>";
+        all += "</ul>";
+        $('#listOffline').append(lx);
+        $('#listAll').append(all);
+        $('#listOnline').append(zx);
+        $('#all').text('全部('+numAll+')');
+        $('#online').text('在线('+numZx+')');
+        $('#offline').text('离线('+numLx+')');
+    }
+
+    //创建Map实例,设置地图允许的最小/大级别, minZoom：设置地图允许的最小级别，maxZoom：设置地图允许的最大级别
+    var map = new BMap.Map("allmap", {
+        minZoom: 5,
+        maxZoom: 18
+    });
+    // 初始化地图,设置中心点坐标和地图级别
+    map.centerAndZoom(new BMap.Point(120.757772, 31.659539), 11);
+
+    //左上角，添加默认缩放平移控件
+    var top_left_navigation = new BMap.NavigationControl();
+    map.addControl(top_left_navigation);
+    //添加地图类型控件
+    map.addControl(new BMap.MapTypeControl({
+        mapTypes: [
+            BMAP_NORMAL_MAP,
+            BMAP_HYBRID_MAP
+        ]
+    }));
+
+    map.setCurrentCity("常熟");  // 设置地图显示的城市 此项是必须设置的
+    //开启鼠标滚轮缩放
+    map.enableScrollWheelZoom(true);
+
+    function initMarker(arrs) {
+        map.clearOverlays();
+        for (var i = 0; i < arrs.length; i++) {
+            var $title = arrs[i].licensePlate;
+            var $lng = arrs[i].longitude; //经度
+            var $lat = arrs[i].latitude; //纬度
+            var $principal = arrs[i].principal;
+            var $id = arrs[i].id;
+
+            var point = new BMap.Point(parseFloat($lng), parseFloat($lat));
+            var myIcon = new BMap.Icon("/resource/img/map/car.png", new BMap.Size(40, 50));
+            var marker = new BMap.Marker(point, {
+                icon: myIcon
+            });  // 创建标注
+
+            marker.setTitle($title);
+            // 将标注添加到地图中
+            map.addOverlay(marker);
+
+
+            var opts = {
+                width: 250,     // 信息窗口宽度
+                height: 250,     // 信息窗口高度
+                title: $principal,  // 信息窗口标题
+                enableMessage: true//设置允许信息窗发送短息
+            };
+            var ArchivesInfoUrl = "/archives/form?id=" + $id;
+            var historyTracksUrl = "/map/historyTracksView?id=" + $id;
+            var content = "车牌号：" + arrs[i].licensePlate + "<br>" +
+                "功能类别：" + arrs[i].category + "<br>" +
+                "IMEI号：" + arrs[i].imei + "<br/>" +
+                "状态：" + arrs[i].state + "<br/>" +
+                "ACC状态：" + arrs[i].acc + "<br/>" +
+                "定位时间：" + arrs[i].locationTime + "<br/>" +
+                "定位方式：" + arrs[i].locationType + "<br>" +
+                "电量：" + arrs[i].electricity + "<br>" +
+                "<a href='javascript:historyTrack(\"" + historyTracksUrl + "\")'>历史轨迹</a>&nbsp;&nbsp;" +
+                "<a href='javascript:archivesIn(\"" + ArchivesInfoUrl + "\")'>车辆信息</a>";
+
+            addClickHandler(content, marker, opts);
+        }
+    }
+
+    function addClickHandler(content, marker, opts) {
+        marker.addEventListener("click", function (e) {
+                openInfo(content, e, opts)
+            }
+        );
+    }
+
+    function openInfo(content, e, opts) {
+        var p = e.target;
+        var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
+        var infoWindow = new BMap.InfoWindow(content, opts);  // 创建信息窗口对象
+        map.openInfoWindow(infoWindow, point); //开启信息窗口
+    }
+
+    function historyTrack(url) {
+        layer.open({
+            type: 2,
+            title: '<i class="iconfont icon-47" style="font-size: 12px"></i>&nbsp;历史轨迹',
+            resize: false,
+            moveOut: true,
+            anim: 1,
+            area: ['850px', '450px'],
+            content: url
+        });
+    }
+
+    function archivesIn(url) {
+        layer.open({
+            type: 2,
+            title: '<i class="iconfont icon-47" style="font-size: 12px"></i>&nbsp;车辆信息',
+            resize: false,
+            moveOut: true,
+            anim: 1,
+            area: ['850px', '450px'],
+            content: url
+        });
+    }
+
+    initMarker(arrs);
+
+    /* window.onload = function () {
+         setTimeout('myrefresh()', 5000); //指定10秒刷新一次 
+     };
+
+     function myrefresh() {
+         window.location.reload();
+     }*/
+</script>
+</body>
+</html>

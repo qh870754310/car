@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>定位监控</title>
+    <script th:src="@{/resource/plugin/jquery/jquery-1.12.4.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/resource/iconfont/iconfont.css}"/>
+    <link rel="stylesheet" th:href="@{/resource/plugin/metismenu/metisMenu.min.css}"/>
+    <script th:src="@{/resource/plugin/metismenu/metisMenu.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/resource/css/common.css}"/>
+    <link rel="stylesheet" th:href="@{/resource/plugin/tabdrop/css/tabdrop.css}"/>
+    <script th:src="@{/resource/plugin/tabdrop/js/tabdrop.js}"></script>
+    <link rel="stylesheet" th:href="@{/resource/css/animate.css}"/>
+    <link rel="stylesheet" th:href="@{/resource/css/csshake.min.css}"/>
+    <link rel="stylesheet" th:href="@{/resource/css/scrollbar.css}"/>
+    <link rel="stylesheet" th:href="@{/resource/plugin/smartmenu/css/smartMenu.css}"/>
+    <script th:src="@{/resource/plugin/smartmenu/js/jquery-smartMenu.js}"></script>
+    <script th:src="@{/resource/js/function.js}"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=5qnG3inG4VhPZOcjNwj4ycZN"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/library/GeoUtils/1.2/src/GeoUtils_min.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/library/LuShu/1.2/src/LuShu_min.js"></script>
+    <script th:src="@{/resource/plugin/date-picker/WdatePicker.js}"></script>
+    <style type="text/css">
+        body, html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";}
+        p {
+            text-indent: 2em; /*em是相对单位，2em即现在一个字大小的两倍*/
+        }
+        button {
+            margin: auto 5px;
+        }
+    </style>
+</head>
+<body>
+<div style="background-color: #CCCCCC;background-size: cover;overflow:hidden;">
+    <div style="float:left;display:inline">
+        <p>回放日期
+            <input id="d4311" class="Wdate" type="text" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',maxDate:'#F{$dp.$D(\'d4312\', {H:-24});}'})"/>
+            到
+            <input id="d4312" class="Wdate" type="text" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',minDate:'#F{$dp.$D(\'d4311\', {H: 24});}'})"/>
+            &nbsp;
+            <button id="run">开始</button>
+            <button id="stop">停止</button>
+            <button id="pause">暂停</button>
+        </p>
+    </div>
+</div>
+
+<div id="allmap"></div>
+<script th:inline="javascript">
+    var carId = [[${carId}]];
+    var map = new BMap.Map("allmap", {
+        minZoom:5,
+        maxZoom:18
+    });
+
+    map.centerAndZoom(new BMap.Point(120.757772,31.659539), 11);
+
+    //左上角，添加默认缩放平移控件
+    var top_left_navigation = new BMap.NavigationControl();
+    map.addControl(top_left_navigation);
+
+    //添加地图类型控件
+    map.addControl(new BMap.MapTypeControl({
+        mapTypes:[
+            BMAP_NORMAL_MAP,
+            BMAP_HYBRID_MAP
+        ]}));
+    map.setCurrentCity("常熟");          // 设置地图显示的城市 此项是必须设置的
+    map.enableScrollWheelZoom(true);
+
+    /***** 获取需要画的历史轨迹的起止时间点 ******/
+    var startTime; 	//历史轨迹的起始时间点
+    var endTime;	//历史轨迹的终止时间点
+
+    var lushu;
+    var drv;
+    var stop=false;
+
+    $("#run").on('click', function () {
+        if(stop){
+            lushu.start();
+        }else{
+            startTime = $('#d4311').val();
+            endTime = $('#d4312').val();
+            var url = "/map/getHistoryTracksPoint?id="+carId;
+            map.clearOverlays();
+            $.ajax({
+                type: "GET",
+                async:false,
+                cache: true,
+                url: url,
+                dataType:"json",
+                data:{'startDate': startTime, 'endDate': endTime},
+                success: function (result) {
+                    if (result.state) {
+                        if (result.tracksPoint != undefined && result.tracksPoint.length > 0) {
+                            //             initHistoryTracks(result.tracksPoint);
+                            var tracks = result.tracksPoint;
+                            // 实例化一个驾车导航用来生成路线
+                            drv = new BMap.DrivingRoute('常熟', {
+                                onSearchComplete: function(res) {
+                                    if (drv.getStatus() == BMAP_STATUS_SUCCESS) {
+                                        var trackPoints = [];	//用来存放从后台获取到的所有历史轨迹点的数据
+                                        for (var i = 0; i < tracks.length; i++) {
+                                            var longitude = parseFloat(tracks[i].longitude);
+                                            var latitude = parseFloat(tracks[i].latitude);
+                                            var licensePlate = tracks[i].licensePlate;
+                                            trackPoints[i] = new BMap.Point(longitude, latitude);
+                                        }
+                                        //      map.panTo(trackPoints[0]);
+                                        map.addOverlay(new BMap.Polyline(trackPoints, {strokeColor: '#337AB7'}));
+                                        map.setViewport(trackPoints);
+                                        lushu = new BMapLib.LuShu(map,trackPoints,{
+                                            defaultContent:licensePlate,
+                                            autoView:true,//是否开启自动视野调整，如果开启那么路书在运动过程中会根据视野自动调整
+                                            icon  : new BMap.Icon('/resource/img/map/car.png', new BMap.Size(52,26),{anchor : new BMap.Size(27, 13)}),
+                                            speed: 1000,
+                                            enableRotation:true,//是否设置marker随着道路的走向进行旋转
+                                            landmarkPois: [],
+                                        });
+                                        /*for(var j = 0; j< trackPoints.length; j++){
+                                            var marker = new BMap.Marker(trackPoints[j]);//基于定位的这个点的点位创建marker
+                                            map.addOverlay(marker);
+                                        }*/
+                                        lushu.start();
+                                    }
+                                }
+                            });
+                            drv.search('常熟市汽车客运北站', '常熟市体育馆');
+
+                        }
+                    }
+
+                },
+                error: function (e) {
+                    alert("获取历史轨迹失败");
+                }
+            });
+        }
+
+
+    });
+    $("#stop").on('click', function(){
+        lushu.stop();
+    });
+    $("#pause").on('click',function(){
+        stop=true;
+        lushu.pause();
+    });
+
+
+    function initHistoryTracks(tracks) {
+        // 实例化一个驾车导航用来生成路线
+        drv = new BMap.DrivingRoute('常熟', {
+            onSearchComplete: function(res) {
+                if (drv.getStatus() == BMAP_STATUS_SUCCESS) {
+                    var trackPoints = [];	//用来存放从后台获取到的所有历史轨迹点的数据
+                    for (var i = 0; i < tracks.length; i++) {
+                        var longitude = parseFloat(tracks[i].longitude);
+                        var latitude = parseFloat(tracks[i].latitude);
+                        var licensePlate = tracks[i].licensePlate;
+                        trackPoints[i] = new BMap.Point(longitude, latitude);
+                    }
+                    map.panTo(trackPoints[0]);
+                    map.addOverlay(new BMap.Polyline(trackPoints, {strokeColor: '#337AB7'}));
+                    map.setViewport(trackPoints);
+                    lushu = new BMapLib.LuShu(map,trackPoints,{
+                        defaultContent:licensePlate,
+                        autoView:true,//是否开启自动视野调整，如果开启那么路书在运动过程中会根据视野自动调整
+                        icon  : new BMap.Icon('/resource/img/map/car.png', new BMap.Size(52,26),{anchor : new BMap.Size(27, 13)}),
+                        speed: 1000,
+                        enableRotation:true,//是否设置marker随着道路的走向进行旋转
+                        landmarkPois: [],
+                    });
+                    for(var j = 0; j< trackPoints.length; j++){
+                        var marker = new BMap.Marker(trackPoints[j]);//基于定位的这个点的点位创建marker
+                        map.addOverlay(marker);
+                    }
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>
